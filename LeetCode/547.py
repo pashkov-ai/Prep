@@ -27,10 +27,7 @@ class UnionFind:
             self.rank[rootX] += 1
 
     def get_union_count(self) -> int:
-        counter = 0
-        for i in range(len(self.root)):
-            counter += self.root[i] == i
-        return counter
+        return sum(self.root[i] == i for i in range(len(self.root)))
 
 
 class Solution:
