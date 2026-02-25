@@ -1,29 +1,34 @@
 class UnionFind:
     def __init__(self, n: int):
         self.parent = list(range(n))
-        self.size = [1] * n
+        self.rank = [1] * n
         self.count = n
         self.max_size = 1
 
-    def find(self, x: int) -> int:
-        while self.parent[x] != x:
-            self.parent[x] = self.parent[self.parent[x]]  # path halving
-            x = self.parent[x]
-        return x
-
     def union(self, x: int, y: int) -> bool:
-        rx, ry = self.find(x), self.find(y)
-        if rx == ry:
+        px, py = self.find(x), self.find(y)
+        if px == py:
             return False
-
-        if self.size[rx] < self.size[ry]:
-            rx, ry = ry, rx
-
-        self.parent[ry] = rx
-        self.size[rx] += self.size[ry]
+        rx, ry = self.rank[px], self.rank[py]
+        if rx < ry:
+            px, py = py, px
+        self.parent[py] = px
+        self.rank[px] += self.rank[py]
         self.max_size = max(self.max_size, self.size[rx])
         self.count -= 1
         return True
+
+    def find(self, x: int) -> int:
+        while x != self.parent[x]:
+            self.parent[x] = self.parent[self.parent[x]]
+            x = self.parent[x]
+        return self.parent[x]
+
+    def is_connected(self, x: int, y: int) -> bool:
+        return self.find(x) == self.find(y)
+
+    def get_max_size(self) -> int:
+        return self.max_size
 
 
 class UnionFindString:
