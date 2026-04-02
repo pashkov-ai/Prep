@@ -1,6 +1,7 @@
 from collections import defaultdict
 from math import gcd
 
+# cool DP
 
 class Solution:
     def countSequences(self, nums: list[int], k: int) -> int:
